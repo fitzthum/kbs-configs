@@ -1,0 +1,37 @@
+[http_server]
+#sockets = ["127.0.0.1:8080"]
+sockets = ["0.0.0.0:8080"]
+#private_key = "/opt/trustee/https.key"
+#certificate = "/opt/trustee/https.crt"
+insecure_http = true
+
+[attestation_token]
+#trusted_certs_paths = ["opt/trustee/ca-cert.pem"]
+insecure_key = true
+
+[attestation_service]
+type = "coco_as_builtin"
+work_dir = "/opt/trustee/attestation-service"
+policy_engine = "opa"
+
+[attestation_service.attestation_token_broker]
+type = "Ear"
+duration_min = 5
+
+#[attestation_service.attestation_token_broker.signer]
+#key_path = "/opt/trustee/token.key"
+#cert_path = "/opt/trustee/token-cert-chain.pem"
+
+[attestation_service.rvps_config]
+type = "BuiltIn"
+
+[policy_engine]
+policy_path = "/opt/trustee/kbs-policy.rego"
+
+[admin]
+auth_public_key = "/opt/trustee/kbs.pem"
+
+[[plugins]]
+name = "resource"
+type = "LocalFs"
+dir_path = "/opt/trustee/resources/repository"
